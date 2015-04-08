@@ -1,4 +1,4 @@
-var postgres = require('./config/postgres'),
+var postgres = require('./config/postgres')(),
     express = require('./config/express');
 
 var app = express();

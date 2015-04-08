@@ -4,7 +4,7 @@ var express = require('express'),
     methodOverride = require('method-override');
 
 module.exports = function() {
-	var app = expres();
+	var app = express();
 
 	if(process.env.NODE_ENV === 'development') {
 		app.use(morgan('dev'));
@@ -16,7 +16,7 @@ module.exports = function() {
 	}));
 	app.use(methodOverride());
 
-	require('../app/routes/tag-routes')(app);
+	//require('../app/routes/tag-routes')(app);
 
 	return app;
 }

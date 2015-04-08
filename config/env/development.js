@@ -1,13 +1,11 @@
 module.exports = {
 	db: {
-		client: 'pg',
-		connection: {
 			host: 'localhost',
+			port: '5432',
 			user: 'eniola',
 			password: 'opeyemi',
 			database: 'mydb'
-		}
-	},
+		},
 
 	name: 'users'
 }
