@@ -7,7 +7,7 @@ module.exports = function() {
         connection: config.db  
 	});
 
-	db.schema.createTable('users', function(table) {
+	db.schema.createTable(config.name, function(table) {
 		table.increments().primary();
 		table.string('username');
 		table.string('password');
