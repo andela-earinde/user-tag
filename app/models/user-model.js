@@ -24,8 +24,9 @@ db.knex.schema.hasTable(config.name).then(function(exists) {
 
    
 var User = db.Model.extend({
-	tableName: 'users'
+	tableName: 'users',
+	hasTimestamps: true
 });
 
 
-module.exports = User;
+module.exports = [User, db];

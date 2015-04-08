@@ -1,6 +1,6 @@
 var app = require('../../server'),
-    User = require('../models/user-model'),
-    knex = require('../../config/postgres')(),
+    User = require('../models/user-model')[0],
+    db = require('../models/user-model')[1],
     user;
 
 describe('user-model Test', function() {
@@ -18,16 +18,23 @@ describe('user-model Test', function() {
     });
 
     afterEach(function(done) {
-        knex.schema.dropTable('users');
+        db.knex('users')
+          .where('username', "eniola")
+          .del().then(function() {
+          	 console.log("deleted");
+          });
         done();
     });
 
     describe("Test if the new row is saved", function() {
     	it("should be able to save a data without issues", function(done) {
             user.save().then(function(model) {
-                //console.log(model);
+                expect(model.attributes).toEqual(jasmine.objectContaining({
+                    "username": "eniola",
+                    "password": "opeyemi"
+                }));
+                 done();
             });
-            done();
     	});
     });
 });
