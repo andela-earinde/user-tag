@@ -1,6 +1,5 @@
-var app = require('../../server'),
-    User = require('../models/user-model')[0],
-    db = require('../models/user-model')[1],
+var User = require('../../config/postgres')()[0],
+    db = require('../../config/postgres')()[1],
     user;
 
 describe('user-model Test', function() {

@@ -6,8 +6,4 @@ module.exports = function() {
         client: 'pg',
         connection: config.db  
 	});
-    
-    var User = require('../app/models/user-model')(db)
-
-	return User;
 }
