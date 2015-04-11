@@ -6,13 +6,19 @@ module.exports = function(app) {
    
 	router.route('/users/login')
 
-	.post(index.test);
+	.post(index.login);
 
 	router.route('/users/signup')
 
-	.post(function(req, res) {
-		res.json({success: "success"});
-	});
+	.post(index.signup);
+
+	router.route('/users/edit')
+
+	.put(index.edit);
+
+	router.route('/users/delete')
+
+	.delete(index.remove);
 
 	app.use('/api', router);
 

@@ -1,4 +1,4 @@
-var app = require("../../server"),
+ var app = require("../../server"),
     request = require("supertest"),
     User = require('../../config/postgres')()[0],
     db = require('../../config/postgres')()[1];
@@ -6,8 +6,9 @@ var app = require("../../server"),
 describe("Controller Test: using the routing test method", function() {
     
     beforeEach(function(done) {
-		User.forge({
+		User.forging({
 			username: "eniola",
+            email: "arindeeniola@yahoo.com",
     		password: "opeyemi",
     		firstname: "eniola",
     		lastname: "arinde",
@@ -37,6 +38,7 @@ describe("Controller Test: using the routing test method", function() {
                 .send({
                     username: "opeyemi",
     		        password: "eniola",
+                    email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
     		        is_admin: false,
@@ -56,11 +58,12 @@ describe("Controller Test: using the routing test method", function() {
                 });
 		});
 
-		it("should return an error if the username or password field is empty", function(done) {
+		it("should return an error if the username, password or email field is empty", function(done) {
 		    request("http://localhost:5000/api").post('/users/signup')
                 .send({
                     username: "",
     		        password: " ",
+                    email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
     		        is_admin: false,
@@ -74,7 +77,7 @@ describe("Controller Test: using the routing test method", function() {
                         console.log(err);
                     }
                     expect(res.body).toEqual(jasmine.objectContaining({
-                    	error: "the username and password field are require"
+                    	error: "the username,password and email field are require"
                     }));
                     done();
                 });	
@@ -85,6 +88,7 @@ describe("Controller Test: using the routing test method", function() {
                 .send({
                     username: "op eyemi",
     		        password: "eniola",
+                    email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
     		        is_admin: false,
@@ -106,10 +110,10 @@ describe("Controller Test: using the routing test method", function() {
     });
 
     describe("Test if user request for login is working when route Post /users/login is requested", function() {
-    	it("should login a user when the currect information is passed", function(done) {
+    	it("should login a user when the correct information is passed", function(done) {
     	    request("http://localhost:5000/api").post('/users/login')
                 .send({
-                    username: "eniola",
+                    email: "arindeeniola@yahoo.com",
     		        password: "opeyemi",	
                 })
                 .set('Accept', 'application/json')
@@ -146,4 +150,90 @@ describe("Controller Test: using the routing test method", function() {
                 });	
     	});
     });	
+
+    describe("Test that the user can change its information when PUT /users/edit route is requested", function() {
+        it("should change the user information when requested", function(done) {
+            request("http://localhost:5000/api").put('/users/edit')
+                .send({
+                    inituser: "eniola",
+                    username: "abdul",
+                    password: "ope"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        success: "Your information has been changed"
+                    }));
+                    done();
+                });    
+        });
+
+        it("should reject the user information when the username or password field is invalid", function(done) {
+            request("http://localhost:5000/api").put('/users/edit')
+                .send({
+                    inituser: "eniola",
+                    username: "",
+                    password: " "
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        error: "The username or password is invalid"
+                    }));
+                    done();
+                });       
+        })
+    });
+
+    describe("Test if the user can delete information when the DELETE users/delete route is requested", function(){
+        it("should delete the user account when requested", function(done) {
+             request("http://localhost:5000/api").delete('/users/delete')
+                .send({
+                    username: "eniola"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                       success: "The account is deleted"
+                    }));
+                    done();
+                });                 
+        });
+
+        it("should return an error if the user does not exists", function(done) {
+             request("http://localhost:5000/api").delete('/users/delete')
+                .send({
+                    username: "opeyemi"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        error: "The user does not exists"
+                    }));
+                    done();
+                });                 
+        });
+    })
 });
+
+
