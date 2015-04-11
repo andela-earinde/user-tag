@@ -21,7 +21,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node_modules/jasmine-node/bin/jasmine-node app/tests/route-test-spec.js --autotest --color",
+    "test": "node_modules/jasmine-node/bin/jasmine-node app/tests/* --autotest --color",
     "start": "node server.js"
   },
   "repository": {

@@ -34,8 +34,10 @@ exports.login = function(req, res) {
         .then(function(model) {
             if(model) {
                  res.json({success: "success"}); 
-            } 
-            res.json({error: "login information invalid"})
+            }
+            else {
+                res.json({error: "login information invalid"});
+            }
         }); 
 }
 
