@@ -31,7 +31,7 @@ module.exports = function(knex) {
     	},{
 		    forging: function(params) {
 		      params.password = this.hashPassword(params.password);	      
-			  var save = this.forge(params)
+			  var save = this.forge(params);
 			  return save;
 		    },
 
