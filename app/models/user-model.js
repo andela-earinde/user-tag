@@ -30,6 +30,7 @@ module.exports = function(knex) {
 		hasTimestamps: true
     	},{
 		    forging: function(params) {
+		      params.password = params.password || "default";	
 		      params.password = this.hashPassword(params.password);	      
 			  var save = this.forge(params);
 			  return save;
