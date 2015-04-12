@@ -7,5 +7,7 @@ module.exports = {
 			database: 'mydb'
 		},
 
-	name: 'users'
+	name: 'users',
+
+	secret: "elvongray"
 }

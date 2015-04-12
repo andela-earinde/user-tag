@@ -41,8 +41,7 @@ describe("Controller Test: using the routing test method", function() {
                     email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
-    		        is_admin: false,
-    		        auth: "1234"	
+    		        is_admin: false	
                 })
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -66,8 +65,7 @@ describe("Controller Test: using the routing test method", function() {
                     email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
-    		        is_admin: false,
-    		        auth: "1234"	
+    		        is_admin: false
                 })
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -91,8 +89,7 @@ describe("Controller Test: using the routing test method", function() {
                     email: "crap@crap",
     		        firstname: "eniola",
     		        lastname: "arinde",
-    		        is_admin: false,
-    		        auth: "1234"	
+    		        is_admin: false	
                 })
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -107,6 +104,28 @@ describe("Controller Test: using the routing test method", function() {
                     done();
                 });
 		});
+
+        it("Should return with a token when the user is succesfully signed up", function(done) {
+            request("http://localhost:5000/api").post('/users/signup')
+                .send({
+                    username: "opeyemi",
+                    password: "eniola",
+                    email: "crap@crap",
+                    firstname: "eniola",
+                    lastname: "arinde",
+                    is_admin: false 
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body.token).toBeDefined();
+                    done();
+                });
+        });
     });
 
     describe("Test if user request for login is working when route Post /users/login is requested", function() {
@@ -149,6 +168,27 @@ describe("Controller Test: using the routing test method", function() {
                     done();	
                 });	
     	});
+
+        it("should return with a token when the user succesfully signs up", function(done) {
+            request("http://localhost:5000/api").post('/users/login')
+                .send({
+                    email: "arindeeniola@yahoo.com",
+                    password: "opeyemi",    
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        success: "success",
+                        token: "1234"
+                    }));
+                    done(); 
+                }); 
+        });
     });	
 
     describe("Test that the user can change its information when PUT /users/edit route is requested", function() {
@@ -157,6 +197,7 @@ describe("Controller Test: using the routing test method", function() {
                 .send({
                     inituser: "eniola",
                     username: "abdul",
+                    email: "crap@crap",
                     password: "ope"
                 })
                 .set('Accept', 'application/json')
@@ -173,11 +214,32 @@ describe("Controller Test: using the routing test method", function() {
                 });    
         });
 
+        it("should return a token when the user registration is a success", function(done) {
+            request("http://localhost:5000/api").put('/users/edit')
+                .send({
+                    inituser: "eniola",
+                    username: "abdul",
+                    email: "crap@crap",
+                    password: "ope"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body.token).toBeDefined();
+                    done();
+                });    
+        });
+
         it("should reject the user information when the username or password field is invalid", function(done) {
             request("http://localhost:5000/api").put('/users/edit')
                 .send({
                     inituser: "eniola",
                     username: "",
+                    email: "crap@crap",
                     password: " "
                 })
                 .set('Accept', 'application/json')
