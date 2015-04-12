@@ -4,7 +4,7 @@ module.exports = {
 			port: '5432',
 			user: 'sizxcrjfkwzsrx',
 			password: 'vB6v9lRAHVpoRcPxJr7K7jMln6',
-			database: '	d9p0obfiuhc61'
+			database: 'd9p0obfiuhc61l'
 		},
 
 	name: 'users',
