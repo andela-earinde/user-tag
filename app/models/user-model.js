@@ -1,5 +1,5 @@
 var config = require('../../config/config'),
-    crypto = require("crypto"),
+    crypto = require("crypto-js/sha256"),
     bookshelf = require('bookshelf');
     
 
@@ -37,8 +37,10 @@ module.exports = function(knex) {
 		    },
 
 		    hashPassword: function(password) {
-		       var salt = new Buffer("65".toString('base64'), 'base64');
-		       return crypto.pbkdf2Sync(password, salt, 4096, 64).toString('base64');
+		       // var salt = new Buffer("65".toString('base64'), 'base64');
+		       // return crypto.pbkdf2Sync(password, salt, 4096, 64).toString('base64');
+		       console.log(crypto(password));
+		       return crypto(password);
 	        }
 	});
 
