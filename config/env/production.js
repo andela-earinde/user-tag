@@ -9,5 +9,7 @@ module.exports = {
 		}
 	},
 
-	name: 'heroku-postgres-ff934065'
+	name: 'users',
+
+	secret: "elvongray"
 }
