@@ -295,7 +295,48 @@ describe("Controller Test: using the routing test method", function() {
                     done();
                 });                 
         });
-    })
+    });
+
+    describe("Test if the user can sign out when the POST users/signout route is requested", function(){
+        it("should reset the token when the signup function is called", function(done) {
+            request("http://localhost:5000/api").post('/users/signout')
+                .send({
+                    username: "eniola"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        success: "The token is reset",
+                        token: 0
+                    }));
+                    done();
+                });              
+        });
+
+        it("should reset the token when the signup function is called", function(done) {
+            request("http://localhost:5000/api").post('/users/signout')
+                .send({
+                    username: "opeyemi"
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        error: "The User does not exist"
+                    }));
+                    done();
+                });              
+        });
+    });
 });
 
 

@@ -52,6 +52,21 @@ exports.login = function(req, res) {
         }); 
 }
 
+exports.signout = function(req, res) {
+    new User({username: req.body.username})
+        .fetch()
+        .then(function(model) {
+            if(model) {
+                model.set({"auth": 0});
+                res.json({ success: "The token is reset",
+                           token: model.get("auth")});
+            }
+            else {
+                res.json({error: "The User does not exist"});
+            }
+        });
+}
+
 exports.edit = function(req, res) {
     new User({"username": req.body.inituser})
         .fetch()

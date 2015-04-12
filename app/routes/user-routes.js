@@ -12,6 +12,10 @@ module.exports = function(app) {
 
 	.post(index.signup);
 
+	router.route('/users/signout')
+
+	.post(index.signout);
+
 	router.route('/users/edit')
 
 	.put(index.edit);
