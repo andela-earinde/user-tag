@@ -72,7 +72,7 @@ exports.edit = function(req, res) {
         .fetch()
         .then(function(model) {
             //console.log(model);
-            if(model && req.body.) {
+            if(model && req.body.username && req.body.password) {
                 var profile = {
                     username: req.body.username,
                     email: req.body.email
