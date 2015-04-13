@@ -126,6 +126,30 @@ describe("Controller Test: using the routing test method", function() {
                     done();
                 });
         });
+
+        it("Should return an error if the username already exist in the database", function(done) {
+            request("http://localhost:5000/api").post('/users/signup')
+                .send({
+                    username: "eniola",
+                    password: "opeyemi",
+                    email: "crap@crap",
+                    firstname: "eniola",
+                    lastname: "arinde",
+                    is_admin: false 
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        error: "The username already exist"
+                    }));
+                    done();
+                });
+        });
     });
 
     describe("Test if user request for login is working when route Post /users/login is requested", function() {
