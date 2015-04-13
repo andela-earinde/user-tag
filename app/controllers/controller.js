@@ -58,6 +58,8 @@ exports.signout = function(req, res) {
         .then(function(model) {
             if(model) {
                 model.set({"auth": 0});
+
+                model.save();
                 res.json({ success: "The token is reset",
                            token: model.get("auth")});
             }
