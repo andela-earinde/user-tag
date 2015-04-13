@@ -72,7 +72,7 @@ exports.edit = function(req, res) {
         .fetch()
         .then(function(model) {
             //console.log(model);
-            if(model && req.body.username && req.body.password && req.body.email) {
+            if(model && req.body.) {
                 var profile = {
                     username: req.body.username,
                     email: req.body.email
@@ -81,9 +81,14 @@ exports.edit = function(req, res) {
 
                 req.body.auth = token;
 
-                model.set(req.body); 
+                delete req.body.inituser;
+
+                model.set(req.body);
+
+                model.save(); 
                 
                 if(model.get("auth") === req.body.auth) {
+                    console.log(model);
                     res.json({success: "Your information has been changed",
                               token: model.get('auth')});
                 }                       
