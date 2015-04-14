@@ -145,7 +145,7 @@ describe("Controller Test: using the routing test method", function() {
                         console.log(err);
                     }
                     expect(res.body).toEqual(jasmine.objectContaining({
-                        error: "The username already exist"
+                        error: "The username already exists"
                     }));
                     done();
                 });
