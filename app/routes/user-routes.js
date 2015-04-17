@@ -29,10 +29,6 @@ module.exports = function(app) {
 
 	.delete(index.remove);
 
-	router.route('/users')
-
-	.get(index.get);
-
 	app.use('/api', router);
 
 	// catch 404 and forward to error handler
