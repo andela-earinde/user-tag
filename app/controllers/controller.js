@@ -4,6 +4,8 @@ var User = require('../../config/postgres')()[0],
     secret = require('../../config/config').secret,
     user;
 
+
+
 exports.signup = function(req, res) {
     if(req.body.username && req.body.password && req.body.email){  
         new User({"username": req.body.username})
@@ -128,6 +130,13 @@ exports.remove = function(req, res) {
             }
         });
 };
+
+exports.removeAll = function(req, res) {
+    db.knex.raw("truncate table users")
+      .then(function(resp) {
+          console.log(resp);
+      })
+}
 
 
 

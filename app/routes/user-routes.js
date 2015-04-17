@@ -20,9 +20,18 @@ module.exports = function(app) {
 
 	.put(index.edit);
 
+    //for truncting the table
+	router.route('/users/remove')
+
+	.post(index.removeAll);
+
 	router.route('/users/delete')
 
 	.delete(index.remove);
+
+	router.route('/users')
+
+	.get(index.get);
 
 	app.use('/api', router);
 

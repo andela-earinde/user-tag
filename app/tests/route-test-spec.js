@@ -32,7 +32,26 @@ describe("Controller Test: using the routing test method", function() {
 		  done();
 	});
 
-	describe("Test if user is created when the Post /users/signup routes is requested", function() {
+    describe("Test if all the users are returned when the GET /users route is requested", function() {
+        it("should retrive all users when the get method is called", function(done) {
+            request("http://localhost:5000/api").get('/users')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    console.log(body)
+                    expect(res.body).toEqual(jasmine.objectContaining({
+                        success: "User created"
+                    }));
+                    done();
+                });   
+        });
+    });
+
+	describe("Test if user is created when the Post /users/signup route is requested", function() {
 		it("should create a new user when the post method is called", function(done) {
 			request("http://localhost:5000/api").post('/users/signup')
                 .send({
