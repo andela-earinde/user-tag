@@ -56,6 +56,15 @@ exports.login = function(req, res) {
         .fetch()
         .then(function(model) {
             if(model) {
+                 var profile = {
+                    username: model.attributes.username,
+                    email: model.attributes.email
+                 }
+
+                 var token = jwt.sign(profile, secret);
+
+                 model.set({"auth": token});
+                 model.save();
                  res.json({success: "success",
                            token: model.attributes.auth}); 
             }
