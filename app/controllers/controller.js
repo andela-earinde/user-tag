@@ -143,7 +143,7 @@ exports.remove = function(req, res) {
 exports.removeAll = function(req, res) {
     db.knex.raw("truncate table users")
       .then(function(resp) {
-          console.log(resp);
+         res.json({none: resp});
       })
 }
 
