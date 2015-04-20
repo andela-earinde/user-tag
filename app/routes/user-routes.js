@@ -3,6 +3,10 @@ var router = express.Router();
 var index = require('../controllers/controller');
 
 module.exports = function(app) {
+
+	router.route('/users')
+
+	.get(index.getUsers);
    
 	router.route('/users/login')
 

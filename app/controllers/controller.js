@@ -5,6 +5,17 @@ var User = require('../../config/postgres')()[0],
     user;
 
 
+exports.getUsers = function(req, res) {
+    User.fetchAll()
+        .then(function(model) {
+            if(model) {
+                res.json(model);
+            }
+            else{
+                res.json({});
+            }
+        });
+}
 
 exports.signup = function(req, res) {
     if(req.body.username && req.body.password && req.body.email){  
@@ -46,7 +57,7 @@ exports.signup = function(req, res) {
             });  
     }
     else {
-        res.json({error: "the username,password and email field are require"});
+        res.json({error: "the username,password and email field are required"});
     }
 };
 
@@ -96,7 +107,7 @@ exports.edit = function(req, res) {
         .fetch()
         .then(function(model) {
             //console.log(model);
-            if(model && req.body.username && req.body.password) {
+            if(model && req.body.username && req.body.password && req.body.email) {
                 var profile = {
                     username: req.body.username,
                     email: req.body.email
@@ -106,7 +117,9 @@ exports.edit = function(req, res) {
                 req.body.auth = token;
 
                 delete req.body.inituser;
-
+           
+                req.body.password = User.hashPassword(req.body.password);
+    
                 model.set(req.body);
 
                 model.save(); 
