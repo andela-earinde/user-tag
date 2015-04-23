@@ -7,6 +7,14 @@ module.exports = function(app) {
 	router.route('/users')
 
 	.get(index.getUsers);
+
+	router.route('/users/auth')
+
+	.post(index.getPayload);
+
+	router.route('/users/:name')
+
+	.get(index.getUser);
    
 	router.route('/users/login')
 

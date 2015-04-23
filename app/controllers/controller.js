@@ -4,15 +4,48 @@ var User = require('../../config/postgres')()[0],
     secret = require('../../config/config').secret,
     user;
 
+exports.getPayload = function(req, res) {
+    jwt.verify(req.body.authorization, secret, function(err, payload) {
+        if(err) {
+            res.json({error: "Invalid Token"});
+        }
+        else {
+            new User({username: payload.username})
+                .fetch()
+                .then(function(model) {
+                    if(model) {
+                        res.json(payload);
+                    }
+                    else {
+                        res.json({error: "Unauthorized Token"});
+                    }
+                });
+        }
+    });
+}
 
 exports.getUsers = function(req, res) {
-    User.fetchAll()
+    User.fetchAll({columns: ["username", "email", "firstname", "lastname", "created_at"]})
         .then(function(model) {
             if(model) {
                 res.json(model);
             }
             else{
-                res.json({});
+                res.json({error: "database is empty"});
+            }
+        });
+}
+
+exports.getUser = function(req, res) {
+    new User({username: req.params.name})
+        .fetch({columns: ["username", "email", "firstname", "lastname", "created_at"]})
+        .then(function(model) {
+            if(model) {
+                console.log(model);
+                res.json(model);
+            }
+            else {
+                res.json({error: "The user does not exist"});
             }
         });
 }
@@ -107,7 +140,7 @@ exports.edit = function(req, res) {
         .fetch()
         .then(function(model) {
             //console.log(model);
-            if(model && req.body.username && req.body.password && req.body.email) {
+            if(model && req.body.username && req.body.email) {
                 var profile = {
                     username: req.body.username,
                     email: req.body.email
@@ -117,8 +150,6 @@ exports.edit = function(req, res) {
                 req.body.auth = token;
 
                 delete req.body.inituser;
-           
-                req.body.password = User.hashPassword(req.body.password);
     
                 model.set(req.body);
 
